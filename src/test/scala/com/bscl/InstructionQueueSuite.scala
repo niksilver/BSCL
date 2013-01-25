@@ -84,4 +84,29 @@ class InstructionQueueSuite extends FunSuite with ShouldMatchers {
     queue.remove( _.instructionType % 2 == 0 ).messages should equal (List(m1, m3))
     queue.remove( p => true ).messages should equal (List())
   }
+  
+  test("Can retrieve message at front of queue") {
+    val m1 = InstructionMessage(1)
+    val m2 = InstructionMessage(2)
+    val m3 = InstructionMessage(3)
+    val m4 = InstructionMessage(4)
+    
+    val queue0 = (new InstructionQueue).place(m1).place(m2).place(m3).place(m4)
+    
+    val (out1, queue1) = queue0.retrieve
+    out1 should equal (m1)
+    queue1.messages should equal (List(m2, m3, m4))
+    
+    val (out2, queue2) = queue1.retrieve
+    out2 should equal (m2)
+    queue2.messages should equal (List(m3, m4))
+    
+    val (out3, queue3) = queue2.retrieve
+    out3 should equal (m3)
+    queue3.messages should equal (List(m4))
+    
+    val (out4, queue4) = queue3.retrieve
+    out4 should equal (m4)
+    queue4.messages should equal (List())
+  }
 }

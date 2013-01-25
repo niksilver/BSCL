@@ -30,6 +30,13 @@ class InstructionQueue private(val messages: List[InstructionMessage]) {
    */
   def remove(p: InstructionMessage => Boolean) =
     new InstructionQueue(messages filterNot p)
+  
+  /**
+   * Retrieve the message at the front of the queue.
+   * Returns the message and the new queue as a pair.
+   */
+  def retrieve =
+    (messages.head, new InstructionQueue(messages.tail))
 }
 
 
