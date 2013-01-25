@@ -122,7 +122,9 @@ class InstructionQueueSuite extends FunSuite with ShouldMatchers {
     queue02.isEmpty should equal (true)
   }
   
-  ignore("Throws exception trying to retrieve message from empty queue") {
-    
+  test("Throws exception trying to retrieve message from empty queue") {
+    evaluating {
+      (new InstructionQueue).retrieve
+    } should produce [EmptyQueueException]
   }
 }

@@ -36,7 +36,11 @@ class InstructionQueue private(val messages: List[InstructionMessage]) {
    * Returns the message and the new queue as a pair.
    */
   def retrieve =
-    (messages.head, new InstructionQueue(messages.tail))
+    try {
+      (messages.head, new InstructionQueue(messages.tail))
+    } catch {
+      case e: NoSuchElementException => throw new EmptyQueueException
+    }
   
   /**
    * True if the queue is empty
@@ -44,6 +48,11 @@ class InstructionQueue private(val messages: List[InstructionMessage]) {
   def isEmpty = messages.isEmpty
 }
 
+/**
+ * Thrown if a trying an operation on empty queue but the queue
+ * is required to be non-empty.
+ */
+class EmptyQueueException extends NoSuchElementException
 
 /**
  * Simple implementation of an instruction message.
