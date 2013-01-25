@@ -127,4 +127,12 @@ class InstructionQueueSuite extends FunSuite with ShouldMatchers {
       (new InstructionQueue).retrieve
     } should produce [EmptyQueueException]
   }
+  
+  test("Throws InvalidMessageException if trying to place invalid message") {
+    evaluating {
+      val queue = new InstructionQueue
+      val msg = InstructionMessage(0)
+      queue.place(msg)
+    } should produce [InvalidMessageException]
+  }
 }

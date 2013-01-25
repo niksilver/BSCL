@@ -20,7 +20,7 @@ class InstructionMessageSuite extends FunSuite with ShouldMatchers {
     msg.productCode should equal (1)
     msg.quantity should equal (1)
     msg.uom should equal (0)
-    msg.timeStamp should equal (0)
+    msg.timeStamp should equal (1)
   }
   
   test("Constructor - can set all parameters") {
@@ -34,6 +34,12 @@ class InstructionMessageSuite extends FunSuite with ShouldMatchers {
   
   test("isValid") {
     (new InstructionMessage(3, 11, 22, 33, 44)).isValid should be (true)
+
+    // With defaults
+    (new InstructionMessage(0)).isValid should be (false)
+    (new InstructionMessage(1)).isValid should be (true)
+    (new InstructionMessage(99)).isValid should be (true)
+    (new InstructionMessage(100)).isValid should be (false)
     
     // instructionType bounds
     (new InstructionMessage(0,   11, 22, 33, 44)).isValid should be (false)

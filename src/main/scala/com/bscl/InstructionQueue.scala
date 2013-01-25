@@ -14,8 +14,10 @@ class InstructionQueue private(val messages: List[InstructionMessage]) {
   /**
    * Place a message at the back of the queue, but it will be pushed
    * forward according to its priority.
+   * @throws InvalidMessageException  If the message isn't valid
    */
   def place(m: InstructionMessage) = {
+    if (!m.isValid) throw new InvalidMessageException
     val (before, after) = messages.span( _.priority >= m.priority )
     new InstructionQueue(before ++ List(m) ++ after)
   }
@@ -49,26 +51,35 @@ class InstructionQueue private(val messages: List[InstructionMessage]) {
 }
 
 /**
- * Thrown if a trying an operation on empty queue but the queue
+ * Thrown if a trying an operation on an empty queue but the queue
  * is required to be non-empty.
  */
 class EmptyQueueException extends NoSuchElementException
 
 /**
+ * Thrown if a trying an operation with a invalid message that is
+ * required to valid.
+ */
+class InvalidMessageException extends NoSuchElementException
+
+/**
  * Simple implementation of an instruction message. For convenience
- * some arguments are optional
+ * some arguments are optional. Note that it is possible to construct
+ * an invalid instruction message (but you can check it with the
+ * isValid method).
+ * 
  * @param instructionType  Required
  * @param productCode  Defaults to 1 if not specified
  * @param uom  An integer 0 to 255, which is strictly a byte, but on the
  *     JVM platform a real byte is unsigned, so we're using an int to avoid
  *     ambiguity. Defaults to 0.
- * @param timeStamp  A timestamp in some unspecified units, defaulting to 0. 
+ * @param timeStamp  A time stamp in some unspecified units, defaulting to 0. 
  */
 case class InstructionMessage(val instructionType: Int,
     productCode: Int = 1,
     quantity: Int = 1,
     uom: Int = 0,
-    timeStamp: Int = 0) {
+    timeStamp: Int = 1) {
   import InstructionPriority._
   
   def priority =
