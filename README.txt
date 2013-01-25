@@ -20,10 +20,11 @@ The test suites can be found in src/test/scala/com/bscl
 I've included the ScalaTest jar in the lib directory, but I'll assume
 you have Scala (I'm running 2.9.2) and sbt, the simple build tool.
 
-You can run tests by starting up sbt at the top level and typing
+You can run tests by going into the top level directory, starting sbt and
+then typing:
 test
 
-They all pass, in both versions.
+All all pass, in both versions.
 
 Implementation notes:
 
@@ -31,19 +32,21 @@ Implementation notes:
   that for the main code because it's quite small. The tests, however, are
   split over multiple files because they can get quite lengthy.
   
-- I used the language of the problem. E.g. a "place" method instead of
+- I used the language of the problem/domain. E.g. a "place" method instead of
   "enqueue".
 
-- Instruction message implementation very simple, just for testing
-  the InstructionQueue class. In the one-hour version it omits all
+- The instruction message implementation very simple, just suficient for
+  testing the InstructionQueue class. In the one-hour version it omits all
   non-essential properties, so only has instructionType (required for
-  prioritising). In the larger version it has additional parameters but
-  they are optional for ease of testing. Real requirements will determine
-  how far this is from acceptability.
+  prioritising). In the larger version it has additional properties but
+  they are set as optional parameters for ease of testing. Real requirements
+  will determine how acceptable this is.
   
-- Interesting that the remove method didn't specify what criteria you should
-  use to remove messages. Similarly the timeStamp property doesn't
-  have a unit (e.g. seconds, milliseconds past the Epoch, etc).
+- Interesting that the requirements for removing messages didn't specify
+  what criteria you should use to remove messages, so I went with something
+  general. And the timeStamp property doesn't have a unit (e.g. seconds,
+  milliseconds past the Epoch, etc), although it doesn't matter so far as
+  this example goes.
   
 - A real implementation of a message queue would serialise the messages, etc.
   In fact, in a real implementation you'd probably use an action MQ.
