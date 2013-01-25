@@ -24,13 +24,19 @@ class InstructionQueue private(val messages: List[InstructionMessage]) {
    * Number of messages in queue
    */
   def size = messages.size
+  
+  /**
+   * Remove a message that satisfies a particular predicate
+   */
+  def remove(p: InstructionMessage => Boolean) =
+    new InstructionQueue(messages filterNot p)
 }
 
 
 /**
  * Simple implementation of an instruction message.
  */
-case class InstructionMessage(instructionType: Int) {
+case class InstructionMessage(val instructionType: Int) {
   import InstructionPriority._
   
   def priority =

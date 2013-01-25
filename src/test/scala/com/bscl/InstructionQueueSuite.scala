@@ -69,4 +69,19 @@ class InstructionQueueSuite extends FunSuite with ShouldMatchers {
     queue.place(m1).place(m2).place(m3).size should equal (3)
   }
   
+  test("Can remove messages") {
+    val m1 = InstructionMessage(1)
+    val m2 = InstructionMessage(2)
+    val m3 = InstructionMessage(3)
+    val m4 = InstructionMessage(4)
+    
+    val queue = (new InstructionQueue).place(m1).place(m2).place(m3).place(m4)
+    
+    // Make sure we know what the queue looks like first
+    queue.messages should equal (List(m1, m2, m3, m4))
+
+    queue.remove( _.instructionType == 1 ).messages should equal (List(m2, m3, m4))
+    queue.remove( _.instructionType % 2 == 0 ).messages should equal (List(m1, m3))
+    queue.remove( p => true ).messages should equal (List())
+  }
 }
