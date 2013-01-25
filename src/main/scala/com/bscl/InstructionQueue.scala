@@ -62,13 +62,13 @@ class EmptyQueueException extends NoSuchElementException
  * @param uom  An integer 0 to 255, which is strictly a byte, but on the
  *     JVM platform a real byte is unsigned, so we're using an int to avoid
  *     ambiguity. Defaults to 0.
- * @param timestamp  A timestamp in some unspecified units, defaulting to 0. 
+ * @param timeStamp  A timestamp in some unspecified units, defaulting to 0. 
  */
 case class InstructionMessage(val instructionType: Int,
     productCode: Int = 1,
     quantity: Int = 1,
     uom: Int = 0,
-    timestamp: Int = 0) {
+    timeStamp: Int = 0) {
   import InstructionPriority._
   
   def priority =
@@ -76,6 +76,16 @@ case class InstructionMessage(val instructionType: Int,
     else if (10 < instructionType && instructionType < 91) Medium
     else Low
 
+  /**
+   * Checks if a message is valid, being whether its parameters
+   * are all in range.
+   */
+  def isValid =
+    (0 < instructionType && instructionType < 100) &&
+    (0 < productCode) &&
+    (0 < quantity) &&
+    (0 <= uom && uom < 256) &&
+    (0 < timeStamp)
 }
 
 /**
