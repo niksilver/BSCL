@@ -8,7 +8,7 @@ class InstructionQueueSuite extends FunSuite with ShouldMatchers {
     val queue = new InstructionQueue
   }
   
-  test("Supports any number of instruction messages") {
+  test("Supports any number of instruction messages (1)") {
     val m1 = InstructionMessage(1)
     val m2 = InstructionMessage(2)
     val m3 = InstructionMessage(3)
@@ -17,6 +17,18 @@ class InstructionQueueSuite extends FunSuite with ShouldMatchers {
     val queue2 = queue.place(m1).place(m2).place(m3)
     
     queue2.messages should equal (List(m1, m2, m3))
+  }
+
+  test("Supports any number of instruction messages (2)") {
+    val msg = InstructionMessage(1)
+    def place(n: Int, accum: InstructionQueue): InstructionQueue = n match {
+      case 0 => accum
+      case _ => place(n-1, accum.place(msg))
+    }
+    
+    place(10, new InstructionQueue).size should equal (10)
+    place(100, new InstructionQueue).size should equal (100)
+    place(1000, new InstructionQueue).size should equal (1000)
   }
   
   test("Prioritises messages according to instruction type") {
@@ -43,6 +55,18 @@ class InstructionQueueSuite extends FunSuite with ShouldMatchers {
     // The medium priority item should appear first
     queueC.messages should equal (List(m10, m50, m95))
     
+  }
+  
+  test("Size") {
+    val queue = new InstructionQueue
+    val m1 = InstructionMessage(1)
+    val m2 = InstructionMessage(2)
+    val m3 = InstructionMessage(3)
+
+    queue.size should equal(0)
+    queue.place(m1).size should equal (1)
+    queue.place(m1).place(m2).size should equal (2)
+    queue.place(m1).place(m2).place(m3).size should equal (3)
   }
   
 }
