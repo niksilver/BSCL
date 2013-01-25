@@ -26,5 +26,5 @@ case class InstructionMessage(instructionType: Int) {
  */
 object InstructionPriority extends Enumeration {
   type InstructionPriority = Value
-  val High, Medium, Low = Value
+  val Low, Medium, High = Value
 }
