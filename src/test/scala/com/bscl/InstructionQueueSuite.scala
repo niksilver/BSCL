@@ -18,4 +18,5 @@ class InstructionQueueSuite extends FunSuite with ShouldMatchers {
     
     queue2.messages should equal (List(m0, m1, m2))
   }
+  
 }

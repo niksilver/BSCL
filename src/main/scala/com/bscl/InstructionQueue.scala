@@ -17,4 +17,14 @@ class InstructionQueue private(val messages: List[InstructionMessage]) {
 /**
  * Simple implementation of an instruction message.
  */
-case class InstructionMessage(instructionType: Int)
+case class InstructionMessage(instructionType: Int) {
+  def priority = InstructionPriority.Low
+}
+
+/**
+ * Priorities for InstructionType
+ */
+object InstructionPriority extends Enumeration {
+  type InstructionPriority = Value
+  val High, Medium, Low = Value
+}
