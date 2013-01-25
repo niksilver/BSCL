@@ -18,7 +18,13 @@ class InstructionQueue private(val messages: List[InstructionMessage]) {
  * Simple implementation of an instruction message.
  */
 case class InstructionMessage(instructionType: Int) {
-  def priority = InstructionPriority.Low
+  import InstructionPriority._
+  
+  def priority =
+    if (0 < instructionType && instructionType < 11) High
+    else if (10 < instructionType && instructionType < 91) Medium
+    else Low
+
 }
 
 /**
