@@ -9,8 +9,10 @@ class InstructionQueue private(val messages: List[InstructionMessage]) {
    */
   def this() = this(List())
   
-  def place(m: InstructionMessage) =
-    new InstructionQueue(messages ++ List(m))
+  def place(m: InstructionMessage) = {
+    val (before, after) = messages.span( _.priority >= m.priority )
+    new InstructionQueue(before ++ List(m) ++ after)
+  }
 }
 
 

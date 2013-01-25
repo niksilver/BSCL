@@ -19,4 +19,24 @@ class InstructionQueueSuite extends FunSuite with ShouldMatchers {
     queue2.messages should equal (List(m1, m2, m3))
   }
   
+  test("Prioritises messages according to instruction type") {
+    val m10 = InstructionMessage(10)
+    val m50 = InstructionMessage(50)
+    val m95 = InstructionMessage(95)
+    
+    // Make a queue with a low priority item first in and
+    // a medium priority item next
+    val queueA = new InstructionQueue().place(m95).place(m50)
+    
+    // The medium priority item should appear first
+    queueA.messages should equal (List(m50, m95))
+    
+    // place medium, place low
+    val queueB = new InstructionQueue().place(m50).place(m95)
+    
+    // The medium priority item should appear first
+    queueB.messages should equal (List(m50, m95))
+    
+  }
+  
 }
