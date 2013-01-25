@@ -37,6 +37,11 @@ class InstructionQueue private(val messages: List[InstructionMessage]) {
    */
   def retrieve =
     (messages.head, new InstructionQueue(messages.tail))
+  
+  /**
+   * True if the queue is empty
+   */
+  def isEmpty = messages.isEmpty
 }
 
 

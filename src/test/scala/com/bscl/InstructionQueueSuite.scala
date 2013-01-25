@@ -109,4 +109,20 @@ class InstructionQueueSuite extends FunSuite with ShouldMatchers {
     out4 should equal (m4)
     queue4.messages should equal (List())
   }
+  
+  test("Can see if queue is empty") {
+    val queue0 = new InstructionQueue
+    val m1 = InstructionMessage(1)
+    
+    queue0.isEmpty should equal (true)
+    queue0.place(m1).isEmpty should equal (false)
+    
+    // The queue after placing and then retrieving a message
+    val queue02 = queue0.place(m1).retrieve._2
+    queue02.isEmpty should equal (true)
+  }
+  
+  ignore("Throws exception trying to retrieve message from empty queue") {
+    
+  }
 }
