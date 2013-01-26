@@ -60,7 +60,7 @@ class EmptyQueueException extends NoSuchElementException
  * Thrown if a trying an operation with a invalid message that is
  * required to valid.
  */
-class InvalidMessageException extends NoSuchElementException
+class InvalidMessageException extends Exception
 
 /**
  * Simple implementation of an instruction message. For convenience
