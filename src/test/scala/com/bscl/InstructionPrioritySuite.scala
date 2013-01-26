@@ -5,12 +5,14 @@ import org.scalatest.matchers.ShouldMatchers
 
 class InstructionPrioritySuite extends FunSuite with ShouldMatchers {
   test("Ordering") {
-    InstructionPriority.High should be > (InstructionPriority.Low)
-    InstructionPriority.High should be > (InstructionPriority.Medium)
-    InstructionPriority.Medium should be > (InstructionPriority.Low)
+    import InstructionPriority._
     
-    InstructionPriority.Low should be < (InstructionPriority.High)
-    InstructionPriority.Medium should be < (InstructionPriority.High)
-    InstructionPriority.Low should be < (InstructionPriority.Medium)
+    High should be > (Low)
+    High should be > (Medium)
+    Medium should be > (Low)
+    
+    Low should be < (High)
+    Medium should be < (High)
+    Low should be < (Medium)
   }
 }

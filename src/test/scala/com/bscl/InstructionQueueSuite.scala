@@ -21,14 +21,12 @@ class InstructionQueueSuite extends FunSuite with ShouldMatchers {
 
   test("Supports any number of instruction messages (2)") {
     val msg = InstructionMessage(1)
-    def place(n: Int, accum: InstructionQueue): InstructionQueue = n match {
-      case 0 => accum
-      case _ => place(n-1, accum.place(msg))
-    }
+    val emptyQueue = new InstructionQueue
+    def fill(n: Int) = (1 to n).foldLeft(emptyQueue)( (queue, _) => queue.place(msg) )
     
-    place(10, new InstructionQueue).size should equal (10)
-    place(100, new InstructionQueue).size should equal (100)
-    place(1000, new InstructionQueue).size should equal (1000)
+    fill(10).size should equal (10)
+    fill(100).size should equal (100)
+    fill(1000).size should equal (1000)
   }
   
   test("Prioritises messages according to instruction type") {
@@ -82,7 +80,7 @@ class InstructionQueueSuite extends FunSuite with ShouldMatchers {
 
     queue.remove( _.instructionType == 1 ).messages should equal (List(m2, m3, m4))
     queue.remove( _.instructionType % 2 == 0 ).messages should equal (List(m1, m3))
-    queue.remove( p => true ).messages should equal (List())
+    queue.remove( _ => true ).messages should equal (List())
   }
   
   test("Can retrieve message at front of queue") {
